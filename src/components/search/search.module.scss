@@ -1,0 +1,42 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+  margin: 0 80px;
+  position: relative;
+
+  .iconSearch {
+    position: absolute;
+    left: 10px;
+    width: 19px;
+    height: 19px;
+    opacity: 0.5;
+  }
+
+  input {
+    padding: 10px 40px;
+    font-size: 16px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus {
+      border: 1px solid rgba(0, 0, 0, .4);
+    }
+  }
+
+  .iconClear {
+    position: absolute;
+    width: 24px;
+    right: 10px;
+    cursor: pointer;
+    opacity: 0.5;
+
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

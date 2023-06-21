@@ -9,12 +9,7 @@ const cotegoryList = [
   'Закрытые'
 ];
 
-function Categories() {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-
-  const onClickCotegory = index => {
-    setActiveIndex(index)
-  }
+function Categories({ onClickCategory, categoryId }) {
 
 
   return (
@@ -23,8 +18,8 @@ function Categories() {
         {cotegoryList.map((value, index) => (
           <li
             key={index}
-            onClick={() => onClickCotegory(index)}
-            className={activeIndex === index ? 'active' : ''}
+            onClick={() => onClickCategory(index)}
+            className={categoryId === index ? 'active' : ''}
           >
             {value}
           </li>
