@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const cotegoryList = [
   'Все',
@@ -7,13 +7,11 @@ const cotegoryList = [
   'Гриль',
   'Острые',
   'Закрытые'
-];
+]
 
 function Categories({ onClickCategory, categoryId }) {
-
-
   return (
-    <div className="categories">
+    <div className='categories'>
       <ul>
         {cotegoryList.map((value, index) => (
           <li
@@ -29,4 +27,4 @@ function Categories({ onClickCategory, categoryId }) {
   )
 }
 
-export default Categories;
+export default Categories
