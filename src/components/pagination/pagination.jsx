@@ -1,21 +1,32 @@
 import React from 'react'
-import styles from './pagination.module.scss';
+import { useDispatch, useSelector } from 'react-redux'
 
-const Pagination = ({ pages, pagination, setPagination }) => {
+import { selectFilter, setPagination } from '../redux/slices/filterSlice'
+import styles from './pagination.module.scss'
+import { useLocation } from 'react-router-dom'
+
+const Pagination = () => {
+  const { pagination } = useSelector(selectFilter)
+  const dispatch = useDispatch()
+  const { pathname } = useLocation()
 
   return (
-    <ul className={styles.lists}>
-      {pages.map((item, i) => (
-        <li
-          key={i}
-          className={pagination.page === i + 1 ? `${styles.active}` : ''}
-          onClick={() => setPagination({ ...pagination, page: i + 1 })}
-        >
-          {item}
-        </li>
-      ))}
-    </ul>
+    <>
+      {pathname === '/' && (
+        <ul className={styles.lists}>
+          {pagination.allPages.map((step, i) => (
+            <li
+              key={i}
+              className={pagination.page === i + 1 ? `${styles.active}` : ''}
+              onClick={() => dispatch(setPagination({ ...pagination, page: i + 1 }))}
+            >
+              {step}
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   )
 }
 
-export default Pagination;
+export default Pagination
