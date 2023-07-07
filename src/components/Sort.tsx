@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { selectFilter, setSort } from './redux/slices/filterSlice'
 
-export const sortListsValue = [
+type SortListType = {
+  value: string
+  type: string
+}
+
+export const sortListsValue: SortListType[] = [
   { value: 'популярности по убыванию', type: '-rating' },
   { value: 'популярности по возрастанию', type: 'rating' },
   { value: 'цене по убыванию', type: '-price' },
@@ -11,19 +16,19 @@ export const sortListsValue = [
   { value: 'алфавиту по убыванию', type: '-title' },
   { value: 'алфавиту по возрастанию', type: 'title' }
 ]
-function Sort() {
-  const [visibleSort, setVisibleSort] = React.useState(false)
+const Sort: React.FC = () => {
+  const [visibleSort, setVisibleSort] = React.useState<boolean>(false)
   const { sort } = useSelector(selectFilter)
   const dispatch = useDispatch()
-  const sortRef = React.useRef()
+  const sortRef = React.useRef<HTMLDivElement>(null)
 
-  const handleClick = obj => {
+  const handleClick = (obj: SortListType) => {
     dispatch(setSort(obj))
     setVisibleSort(false)
   }
 
   React.useEffect(() => {
-    const handleClickOverlay = e => {
+    const handleClickOverlay = (e: any) => {
       if (!e.composedPath().includes(sortRef.current)) setVisibleSort(false)
     }
     document.body.addEventListener('click', handleClickOverlay)

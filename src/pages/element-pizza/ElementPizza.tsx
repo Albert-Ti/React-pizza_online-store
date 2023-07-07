@@ -2,11 +2,14 @@ import axios from 'axios'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import styles from './ElementPizza.module.css'
-const typePizza = ['тонкое', 'традиционная']
+import styles from './ElementPizza.module.scss'
 
-const ElementPizza = () => {
-  const [{ name, imageUrl, price, sizes, types }, setItem] = React.useState({})
+const ElementPizza: React.FC = () => {
+  const [item, setItem] = React.useState<{
+    imageUrl: string
+    name: string
+    price: number
+  }>()
 
   const navigate = useNavigate()
   const { id } = useParams()
@@ -21,24 +24,22 @@ const ElementPizza = () => {
         setItem(data)
       } catch (error) {
         alert('Произошла ошибка')
-        console.log('Ошибка запроса ', error.message)
+        console.log('Ошибка запроса ', error)
         navigate('/') // вернет на главную страницу
       }
     }
     fetchItem()
   }, [])
 
-  if (!imageUrl) {
-    return 'Загрузка...'
+  if (!item) {
+    return <>'Загрузка...'</>
   }
 
   return (
     <div className={styles.wrapper}>
-      <img src={imageUrl} alt={name} />
-      <h2>{name}</h2>
-      <p>
-        Пицца {typePizza[types[1]]}, размер {sizes[1]}, цена {price} ₽
-      </p>
+      <img src={item.imageUrl} alt={item.name} />
+      <h2>{item.name}</h2>
+      <p>цена {item.price} ₽</p>
     </div>
   )
 }

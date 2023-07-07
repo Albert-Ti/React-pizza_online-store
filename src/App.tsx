@@ -6,7 +6,6 @@ import Home from './pages/home/Home'
 import Header from './components/Header'
 import NotFound from './pages/not-found/NotFound'
 import Cart from './pages/Cart'
-import Pagination from './components/pagination/pagination'
 import ElementPizza from './pages/element-pizza/ElementPizza'
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
             <Route element={<NotFound />} path='*' />
           </Routes>
         </div>
-        {/* <Pagination /> */}
       </div>
     </div>
   )

@@ -12,9 +12,9 @@ import { selectFilter, setCategoryId, setFilters } from '../../components/redux/
 import styles from './home.module.scss'
 import Pagination from '../../components/pagination/pagination'
 
-const Home = () => {
-  const isFetch = React.useRef(false)
-  const isMounted = React.useRef(false)
+const Home: React.FC = () => {
+  const isFetch = React.useRef<boolean>(false)
+  const isMounted = React.useRef<boolean>(false)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -23,12 +23,13 @@ const Home = () => {
   const { searchValue, categoryId, sort, pagination } = useSelector(selectFilter)
 
   const getPizzas = async () => {
-    const sortBy = sort.type.replace('-', '')
-    const order = sort.type.includes('-') ? 'desc' : 'asc'
-    const category = categoryId > 0 ? `category=${categoryId}` : ''
-    const url = 'https://648a12a25fa58521cab0be8c.mockapi.io/items'
+    const sortBy: string = sort.type.replace('-', '')
+    const order: string = sort.type.includes('-') ? 'desc' : 'asc'
+    const category: string = categoryId > 0 ? `category=${categoryId}` : ''
+    const url: string = 'https://648a12a25fa58521cab0be8c.mockapi.io/items'
 
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         url,
         category,
@@ -88,7 +89,10 @@ const Home = () => {
   return (
     <>
       <div className='content__top'>
-        <Categories onClickCategory={i => dispatch(setCategoryId(i))} categoryId={categoryId} />
+        <Categories
+          onClickCategory={(i: number) => dispatch(setCategoryId(i))}
+          categoryId={categoryId}
+        />
         <Sort />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 20, margin: '40px 0px' }}>
@@ -105,8 +109,8 @@ const Home = () => {
         {status === 'loading'
           ? [...new Array(6)].map((_, index) => <Sceleton key={index} />)
           : items
-              .filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
-              .map(item => <PizzaBlock key={item.id} {...item} />)}
+              .filter((item: any) => item.name.toLowerCase().includes(searchValue.toLowerCase()))
+              .map((item: any) => <PizzaBlock key={item.id} {...item} />)}
       </div>
     </>
   )

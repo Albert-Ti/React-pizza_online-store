@@ -1,15 +1,13 @@
 import React from 'react'
 
-const cotegoryList = [
-  'Все',
-  'Мясные',
-  'Вегетарианская',
-  'Гриль',
-  'Острые',
-  'Закрытые'
-]
+const cotegoryList: string[] = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
-function Categories({ onClickCategory, categoryId }) {
+type CategoriesPropsType = {
+  categoryId: number
+  onClickCategory: (index: number) => void
+}
+
+const Categories: React.FC<CategoriesPropsType> = ({ onClickCategory, categoryId }) => {
   return (
     <div className='categories'>
       <ul>

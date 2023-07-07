@@ -5,13 +5,13 @@ import styles from './search.module.scss'
 import { setSearchValue, selectFilter } from '../redux/slices/filterSlice'
 
 const Search = () => {
-  const inputRef = React.useRef()
+  const inputRef = React.useRef<HTMLInputElement>(null)
   const { searchValue } = useSelector(selectFilter)
   const dispatch = useDispatch()
 
   const onClickClear = () => {
     dispatch(setSearchValue(''))
-    inputRef.current.focus()
+    inputRef.current?.focus()
   }
 
   return (
