@@ -1,10 +1,9 @@
 import axios from 'axios'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import styles from './Pizza.module.scss'
 
-import styles from './ElementPizza.module.scss'
-
-const ElementPizza: React.FC = () => {
+const PizzaDietails: React.FC = () => {
   const [item, setItem] = React.useState<{
     imageUrl: string
     name: string
@@ -15,12 +14,11 @@ const ElementPizza: React.FC = () => {
   const { id } = useParams()
 
   React.useEffect(() => {
-    // fetch(`https://648a12a25fa58521cab0be8c.mockapi.io/items?${id}`)
-    //   .then(res => res.json())
-    //   .then(item => setItem(...item))
+    const url = 'https://648a12a25fa58521cab0be8c.mockapi.io/items/'
+
     async function fetchItem() {
       try {
-        const { data } = await axios.get('https://648a12a25fa58521cab0be8c.mockapi.io/items/' + id)
+        const { data } = await axios.get(url + id)
         setItem(data)
       } catch (error) {
         alert('Произошла ошибка')
@@ -29,6 +27,7 @@ const ElementPizza: React.FC = () => {
       }
     }
     fetchItem()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!item) {
@@ -44,4 +43,4 @@ const ElementPizza: React.FC = () => {
   )
 }
 
-export default ElementPizza
+export default PizzaDietails

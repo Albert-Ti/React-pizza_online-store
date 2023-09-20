@@ -90,9 +90,6 @@ body {
   &--cart {
     max-width: 820px;
     margin: 90px auto;
-
-    .content__title {
-    }
   }
 }
 
@@ -201,6 +198,22 @@ body {
         svg {
           path:first-of-type {
             display: none;
+          }
+        }
+        &:disabled {
+          opacity: 0.4;
+          border-color: #919191;
+          &:active {
+            transform: none;
+          }
+          &:hover {
+            background-color: transparent;
+            svg path {
+              fill: #919191;
+            }
+          }
+          svg path {
+            fill: #919191;
           }
         }
       }

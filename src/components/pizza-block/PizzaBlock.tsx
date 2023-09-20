@@ -1,26 +1,26 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { additem } from '../redux/slices/cartSlice'
-import { selectPizzaItemsById } from '../redux/slices/fetchPizzas'
 import { Link } from 'react-router-dom'
+import { selectCartByItemId } from '../../redux/cart/selectors'
+import { additem } from '../../redux/cart/slice'
+
 const typePizza: string[] = ['тонкое', 'традиционная']
 
-type PizzaBlockPropsType = {
+type ListPizzasProps = {
+  id: string
   name: string
   imageUrl: string
   price: number
   sizes: number[]
   types: number[]
-  id: number
 }
 
-const PizzaBlock: React.FC<PizzaBlockPropsType> = ({ name, imageUrl, price, sizes, types, id }) => {
+const PizzaBlock: React.FC<ListPizzasProps> = ({ name, imageUrl, price, sizes, types, id }) => {
   const [activeSize, setActiveSize] = React.useState<number>(0)
   const [activeType, setActiveType] = React.useState<number>(0)
   const dispatch = useDispatch()
-  const countPizza = useSelector(selectPizzaItemsById(id))
-  const checkCount = countPizza ? countPizza.count : 0
+  const cartItem = useSelector(selectCartByItemId(id))
+  const checkCount = cartItem ? cartItem.count : 0
 
   const addPizzas = () => {
     const newPizzas = {
@@ -28,8 +28,9 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = ({ name, imageUrl, price, size
       imageUrl,
       name,
       price,
-      types: typePizza[activeType],
-      sizes: sizes[activeSize]
+      type: typePizza[activeType],
+      size: sizes[activeSize],
+      count: 0
     }
     dispatch(additem(newPizzas))
   }
@@ -67,7 +68,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = ({ name, imageUrl, price, size
       <div className='pizza-block__bottom'>
         <div className='pizza-block__price'>от {price} ₽</div>
 
-        <button className='button button--outline button--add'>
+        <button onClick={addPizzas} className='button button--outline button--add'>
           <svg
             width='12'
             height='12'
@@ -80,7 +81,7 @@ const PizzaBlock: React.FC<PizzaBlockPropsType> = ({ name, imageUrl, price, size
               fill='white'
             />
           </svg>
-          <span onClick={addPizzas}>Добавить</span>
+          <span>Добавить</span>
           {checkCount > 0 && <i>{checkCount}</i>}
         </button>
       </div>

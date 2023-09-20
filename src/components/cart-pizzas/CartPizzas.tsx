@@ -1,23 +1,26 @@
 import React from 'react'
-import { deleteItems, additem, removeItem } from '../redux/slices/cartSlice'
+import { additem, removeItem, removeItems } from '../../redux/cart/slice'
 import { useDispatch } from 'react-redux'
 
-type CartPizzasPropsType = {
+type CartPizzasProps = {
   item: {
+    id: string
     name: string
     imageUrl: string
-    types: number
-    sizes: number
+    type: string
+    size: number
     count: number
     price: number
   }
 }
 
-const CartPizzas: React.FC<CartPizzasPropsType> = ({ item }) => {
+const CartPizzas: React.FC<CartPizzasProps> = ({ item }) => {
   const dispatch = useDispatch()
 
   const onClickDeleteItems = () => {
-    if (window.confirm(`Вы хотите удалить все пиццы ${item.name}?`)) dispatch(deleteItems(item))
+    if (window.confirm(`Вы хотите удалить все пиццы ${item.name}?`)) {
+      dispatch(removeItems(item))
+    }
   }
 
   return (
@@ -28,11 +31,12 @@ const CartPizzas: React.FC<CartPizzasPropsType> = ({ item }) => {
       <div className='cart__item-info'>
         <h3>{item.name}</h3>
         <p>
-          {item.types}, {item.sizes} см.
+          {item.type}, {item.size} см.
         </p>
       </div>
       <div className='cart__item-count'>
-        <div
+        <button
+          disabled={item.count === 1}
           onClick={() => dispatch(removeItem(item))}
           className='button button--outline button--circle cart__item-count-minus'
         >
@@ -52,9 +56,9 @@ const CartPizzas: React.FC<CartPizzasPropsType> = ({ item }) => {
               fill='#EB5A1E'
             ></path>
           </svg>
-        </div>
+        </button>
         <b>{item.count}</b>
-        <div
+        <button
           onClick={() => dispatch(additem(item))}
           className='button button--outline button--circle cart__item-count-plus'
         >
@@ -74,7 +78,7 @@ const CartPizzas: React.FC<CartPizzasPropsType> = ({ item }) => {
               fill='#EB5A1E'
             ></path>
           </svg>
-        </div>
+        </button>
       </div>
       <div className='cart__item-price'>
         <b>{item.price * item.count} ₽</b>

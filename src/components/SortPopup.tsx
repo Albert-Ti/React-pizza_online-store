@@ -1,14 +1,9 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setSort } from '../redux/filter/slice'
+import { Sort } from '../redux/filter/types'
 
-import { selectFilter, setSort } from './redux/slices/filterSlice'
-
-type SortListType = {
-  value: string
-  type: string
-}
-
-export const sortListsValue: SortListType[] = [
+export const sortListsValue: Sort[] = [
   { value: 'популярности по убыванию', type: '-rating' },
   { value: 'популярности по возрастанию', type: 'rating' },
   { value: 'цене по убыванию', type: '-price' },
@@ -16,13 +11,16 @@ export const sortListsValue: SortListType[] = [
   { value: 'алфавиту по убыванию', type: '-title' },
   { value: 'алфавиту по возрастанию', type: 'title' }
 ]
-const Sort: React.FC = () => {
+type SortPopupProps = {
+  sort: Sort
+}
+
+const SortPopup: React.FC<SortPopupProps> = React.memo(({ sort }) => {
   const [visibleSort, setVisibleSort] = React.useState<boolean>(false)
-  const { sort } = useSelector(selectFilter)
   const dispatch = useDispatch()
   const sortRef = React.useRef<HTMLDivElement>(null)
 
-  const handleClick = (obj: SortListType) => {
+  const handleClick = (obj: Sort) => {
     dispatch(setSort(obj))
     setVisibleSort(false)
   }
@@ -70,6 +68,6 @@ const Sort: React.FC = () => {
       )}
     </div>
   )
-}
+})
 
-export default Sort
+export default SortPopup
