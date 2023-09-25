@@ -1,9 +1,9 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setSort } from '../redux/filter/slice'
+import { Sort } from '../redux/filter/types'
 
-import { selectFilter, setSort } from './redux/slices/filterSlice'
-
-export const sortListsValue = [
+export const sortListsValue: Sort[] = [
   { value: 'популярности по убыванию', type: '-rating' },
   { value: 'популярности по возрастанию', type: 'rating' },
   { value: 'цене по убыванию', type: '-price' },
@@ -11,19 +11,22 @@ export const sortListsValue = [
   { value: 'алфавиту по убыванию', type: '-title' },
   { value: 'алфавиту по возрастанию', type: 'title' }
 ]
-function Sort() {
-  const [visibleSort, setVisibleSort] = React.useState(false)
-  const { sort } = useSelector(selectFilter)
-  const dispatch = useDispatch()
-  const sortRef = React.useRef()
+type SortPopupProps = {
+  sort: Sort
+}
 
-  const handleClick = obj => {
+const SortPopup: React.FC<SortPopupProps> = React.memo(({ sort }) => {
+  const [visibleSort, setVisibleSort] = React.useState<boolean>(false)
+  const dispatch = useDispatch()
+  const sortRef = React.useRef<HTMLDivElement>(null)
+
+  const handleClick = (obj: Sort) => {
     dispatch(setSort(obj))
     setVisibleSort(false)
   }
 
   React.useEffect(() => {
-    const handleClickOverlay = e => {
+    const handleClickOverlay = (e: any) => {
       if (!e.composedPath().includes(sortRef.current)) setVisibleSort(false)
     }
     document.body.addEventListener('click', handleClickOverlay)
@@ -65,6 +68,6 @@ function Sort() {
       )}
     </div>
   )
-}
+})
 
-export default Sort
+export default SortPopup

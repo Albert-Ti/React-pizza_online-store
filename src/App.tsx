@@ -1,13 +1,11 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-
-import './scss/app.scss'
-import Home from './pages/home/Home'
+import { Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
-import NotFound from './pages/not-found/NotFound'
 import Cart from './pages/Cart'
-import Pagination from './components/pagination/pagination'
-import ElementPizza from './pages/element-pizza/ElementPizza'
+import PizzaDietails from './pages/pizza-dietails/PizzaDietails'
+import { Home } from './pages/home/Home'
+import NotFound from './pages/not-found/NotFound'
+import './scss/app.scss'
 
 function App() {
   return (
@@ -18,11 +16,10 @@ function App() {
           <Routes>
             <Route element={<Home />} path='/' />
             <Route element={<Cart />} path='/cart' />
-            <Route element={<ElementPizza />} path='/pizza/:id' />
+            <Route element={<PizzaDietails />} path='/pizza/:id' />
             <Route element={<NotFound />} path='*' />
           </Routes>
         </div>
-        {/* <Pagination /> */}
       </div>
     </div>
   )

@@ -1,23 +1,26 @@
 import qs from 'qs'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-
-import Categories from '../../components/Cotegories'
-import Sort, { sortListsValue } from '../../components/Sort'
-import PizzaBlock from '../../components/pizza-block/PizzaBlock'
+import Categories from '../../components/Categories'
+import SortPopup, { sortListsValue } from '../../components/SortPopup'
+import Pagination from '../../components/pagination/Pagination'
+import ListPizzas from '../../components/pizza-block/PizzaBlock'
 import Sceleton from '../../components/pizza-block/Sceleton'
-import { fetchPizzas, selectPizzas } from '../../components/redux/slices/fetchPizzas'
-import { selectFilter, setCategoryId, setFilters } from '../../components/redux/slices/filterSlice'
-import styles from './home.module.scss'
-import Pagination from '../../components/pagination/pagination'
+import { selectFilter } from '../../redux/filter/selectors'
+import { setCategoryId, setFilters } from '../../redux/filter/slice'
+import { Sort } from '../../redux/filter/types'
+import { fetchPizzas } from '../../redux/pizza/actions'
+import { selectPizzas } from '../../redux/pizza/selectors'
+import { useAppDispatch } from '../../redux/store'
+import styles from './Home.module.scss'
 
-const Home = () => {
-  const isFetch = React.useRef(false)
-  const isMounted = React.useRef(false)
+export const Home: React.FC = () => {
+  const isFetch = React.useRef<boolean>(false)
+  const isMounted = React.useRef<boolean>(false)
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const { items, status } = useSelector(selectPizzas)
   const { searchValue, categoryId, sort, pagination } = useSelector(selectFilter)
@@ -52,44 +55,47 @@ const Home = () => {
     }
 
     isMounted.current = true
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, sort.type, pagination.page])
 
   // После первого рендера, проверяем url-params и сохраняем в redux
   React.useEffect(() => {
     if (window.location.search) {
       const { categoryId, sortType, currentPage } = qs.parse(window.location.search.substring(1))
-
-      const sortCorrect = sortListsValue.find(item => item.type === sortType)
-
+      const sortCorrect = sortListsValue.find(item => item.type === sortType) as Sort
       dispatch(
         setFilters({
-          categoryId: categoryId,
+          categoryId: Number(categoryId),
           sort: sortCorrect,
           pagination: {
             ...pagination,
-            page: currentPage
+            page: Number(currentPage)
           }
         })
       )
 
       isFetch.current = true
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   React.useEffect(() => {
     window.scrollTo(0, 0)
-
-    if (!isFetch.current) {
-      getPizzas()
-    }
+    getPizzas()
     isFetch.current = false
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId, sort.type, pagination.page])
+
+  const handleChangeCategory = React.useCallback((i: number) => {
+    dispatch(setCategoryId(i))
+  }, [])
 
   return (
     <>
       <div className='content__top'>
-        <Categories onClickCategory={i => dispatch(setCategoryId(i))} categoryId={categoryId} />
-        <Sort />
+        <Categories onClickCategory={handleChangeCategory} categoryId={categoryId} />
+        <SortPopup sort={sort} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 20, margin: '40px 0px' }}>
         <h2 className='content__title'>Все пиццы</h2>
@@ -106,35 +112,8 @@ const Home = () => {
           ? [...new Array(6)].map((_, index) => <Sceleton key={index} />)
           : items
               .filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()))
-              .map(item => <PizzaBlock key={item.id} {...item} />)}
+              .map(item => <ListPizzas key={item.id} {...item} />)}
       </div>
     </>
   )
 }
-
-export default Home
-
-/* const [toggleCategoryId, setToggleCategoryId] = React.useState(0);
- const [toggleSortValue, setToggleSortValue] = React.useState({
-   value: 'популярности',
-   type: 'rating'
- }); */
-
-/*  const setCategoryIdTwo = i => {
-  return dispatch({ type: 'filters/setCategoryId', payload: i })
-}
- */
-
-/* fetch(`${url}?page=${pagination.page}&limit=${pagination.limit}&${category}&sortBy=${sortBy}&order=${order}`
-)
-  .then(res => res.json())
-  .then(json => {
-    setDataPizzas({
-      ...data,
-      items: json,
-      isloading: false
-    })
-    getPages(10);
-  }
-  ).catch(err => console.log(err))
- */
