@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { getPizzaStorage } from '../../utils/getPizzaStorage'
 import { calcTotalPrice } from '../../utils/calcTotalPrice'
 import { CartItem, CartSliceState } from './types'
+import { getPizzasLocalStorage } from '../../utils/getPizzasLocalStorage'
 
-const initialState: CartSliceState = getPizzaStorage()
+const initialState: CartSliceState = getPizzasLocalStorage()
 
 const CartSlice = createSlice({
   name: 'cart',
@@ -32,7 +32,7 @@ const CartSlice = createSlice({
 
     removeItems: (state, action: PayloadAction<CartItem>) => {
       state.items = state.items.filter(item => item.id !== action.payload.id)
-      state.totalPrice = calcTotalPrice(state.items)
+      state.totalPrice = 0
     },
 
     clearItems: state => {
