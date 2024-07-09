@@ -7,9 +7,9 @@ type CategoriesProps = {
   onClickCategory: (index: number) => void // если функция не возвращает какое-то значение то прописываем void - что значит пустота
 }
 
-const Categories: React.FC<CategoriesProps> = React.memo(({ categoryId, onClickCategory }) => {
+const Categories: React.FC<CategoriesProps> = React.memo(({categoryId, onClickCategory}) => {
   return (
-    <div className='categories'>
+    <div className="categories">
       <ul>
         {categoryList.map((value, index) => (
           <li
